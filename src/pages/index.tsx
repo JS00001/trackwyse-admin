@@ -6,7 +6,7 @@
  */
 
 const Home = () => {
-  return <></>;
+  return <div className="bg-red p-6"></div>;
 };
 
 export default Home;
