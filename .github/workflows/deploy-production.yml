@@ -16,10 +16,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/www/trackwyse.com
+            cd /var/www/admin.trackwyse.com
             git pull origin main
             source ~/.nvm/nvm.sh
             nvm use node
             yarn install
             yarn build
-            pm2 restart trackwyse.com
+            pm2 restart admin.trackwyse.com
