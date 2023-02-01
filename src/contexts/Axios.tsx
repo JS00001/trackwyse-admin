@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
 import Config from "@/config";
+import { useAuth } from "@/contexts/Auth";
 
 const baseURL =
   Config.BUILD_ENV === "development" || Config.BUILD_ENV === "staging"
@@ -22,9 +23,14 @@ const axiosClient = axios.create({
 
 const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
+  const { accessToken } = useAuth();
 
   useEffect(() => {
     const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+
       return config;
     };
 

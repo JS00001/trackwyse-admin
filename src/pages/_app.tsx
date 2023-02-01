@@ -9,9 +9,9 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { QueryClientProvider } from "@tanstack/react-query";
 
+import AuthProvider from "@/contexts/Auth";
 import queryClient from "@/lib/queryClient";
 import { AxiosInterceptor } from "@/contexts/Axios";
-import AuthProvider from "@/contexts/Auth";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
