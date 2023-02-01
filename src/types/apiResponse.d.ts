@@ -30,3 +30,9 @@ type RefreshAccessTokenAPIResponse = APIResponse & {
     accessToken: string;
   };
 };
+
+type GetValidClientsAPIResponse = APIResponse & {
+  data: {
+    version: string;
+  };
+};

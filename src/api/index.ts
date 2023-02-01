@@ -56,8 +56,21 @@ const getUser = (): Promise<UserAPIResponse> => {
   return axios.get("/api/v1/user");
 };
 
+/*
+  GET /status/valid-clients
+
+  Response Body:
+    - error: boolean
+    - message: string
+    - version: string
+*/
+const getValidClients = (): Promise<GetValidClientsAPIResponse> => {
+  return axios.get("/status/valid-clients");
+};
+
 export default {
   login,
   getUser,
   refreshAccessToken,
+  getValidClients,
 };
