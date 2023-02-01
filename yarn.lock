@@ -118,10 +118,6 @@
     "@tanstack/query-core" "4.24.4"
     use-sync-external-store "^1.2.0"
 
-"@types/@createnextapp/async-local-storage":
-  version "1.0.1"
-  resolved "https://codeload.github.com/createnextapp/async-local-storage/tar.gz/62fdd11ee773464207d499ceccd1e9bbe0bef06c"
-
 "@types/node@18.11.18":
   version "18.11.18"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.18.tgz#8dfb97f0da23c2293e554c5a50d61ef134d7697f"

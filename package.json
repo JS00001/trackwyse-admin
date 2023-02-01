@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "cross-env BUILD_ENV=development next dev",
     "build": "next build",
-    "start:staging": "cross-env BUILD_ENV=staging next start -p 3008",
-    "start:production": "cross-env BUILD_ENV=production next start -p 3009",
+    "start:staging": "cross-env BUILD_ENV=staging next start -p 3009",
+    "start:production": "cross-env BUILD_ENV=production next start -p 3010",
     "lint": "next lint"
   },
   "dependencies": {
@@ -23,7 +23,6 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
-    "@types/": "createnextapp/async-local-storage",
     "autoprefixer": "^10.4.13",
     "cross-env": "^7.0.3",
     "postcss": "^8.4.21",
