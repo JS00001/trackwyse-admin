@@ -5,10 +5,66 @@
  * Copyright (c) 2023 Trackwyse
  */
 
-interface InputProps {}
+import cn from "classnames";
+import { useState } from "react";
 
-const Input: React.FC<InputProps> = () => {
-  return <></>;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  placeholder?: string;
+  disabled?: boolean;
+  error?: string;
+  className?: string;
+  containerClassName?: string;
+}
+
+const Input: React.FC<InputProps> = ({
+  placeholder,
+  disabled,
+  error,
+  className,
+  containerClassName,
+  ...props
+}) => {
+  const [hasError, setHasError] = useState(!!error);
+
+  const removeError = () => {
+    setHasError(false);
+  };
+
+  const containerClassnames = cn("group relative", containerClassName);
+
+  const inputClassnames = cn(
+    "peer border-gray-200 border px-3 py-3 rounded-sm bg-transparent text-base w-full",
+    "hover:ring-4 hover:ring-gray-100 hover:border-gray-400",
+    "focus:outline-none focus:border-primary-200 pb-1 py-5",
+    "placeholder:opacity-0",
+    hasError && "border-red-500",
+    disabled && "border-gray-100 cursor-not-allowed",
+    disabled && "hover:ring-0 hover:border-gray-100",
+    className
+  );
+
+  const labelClassnames = cn(
+    "absolute left-3 -z-10 text-gray-400 text-xs top-1",
+    "pointer-events-none transition-all duration-300",
+    "peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base",
+    "group-focus-within:!text-primary-200 group-focus-within:!top-1 group-focus-within:!text-xs",
+    hasError && "text-red-500"
+  );
+
+  return (
+    <div className={containerClassnames}>
+      <input
+        type="text"
+        disabled={disabled}
+        onClick={removeError}
+        placeholder={placeholder}
+        className={inputClassnames}
+        {...props}
+      />
+      <label className={labelClassnames}>{placeholder}</label>
+      <p className="mt-1 whitespace-pre-wrap text-sm text-red-500">{error}</p>
+    </div>
+  );
 };
 
 export default Input;

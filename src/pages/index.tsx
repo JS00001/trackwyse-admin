@@ -5,8 +5,14 @@
  * Copyright (c) 2023 Trackwyse
  */
 
+import Input from "@/components/Input";
+
 const HomePage = () => {
-  return <div className="bg-red-500 h-20 w-20"></div>;
+  return (
+    <div className="flex h-96 w-full items-center justify-center">
+      <Input placeholder="Email Address" />
+    </div>
+  );
 };
 
 export default HomePage;
