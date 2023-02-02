@@ -7,10 +7,18 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
 import Config from "@/config";
 import { useAuth } from "@/contexts/Auth";
+
+interface AxiosConfig extends InternalAxiosRequestConfig {
+  retryCount?: number;
+}
+
+interface AxiosErrorConfig extends AxiosError {
+  config: AxiosConfig;
+}
 
 const baseURL =
   Config.BUILD_ENV === "development" || Config.BUILD_ENV === "staging"
@@ -23,10 +31,10 @@ const axiosClient = axios.create({
 
 const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const { accessToken } = useAuth();
+  const { accessToken, getAccessToken } = useAuth();
 
   useEffect(() => {
-    const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
+    const requestInterceptor = (config: AxiosConfig) => {
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -34,7 +42,7 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
       return config;
     };
 
-    const requestErrInterceptor = (error: any) => {
+    const requestErrInterceptor = (error: AxiosError) => {
       return Promise.reject(error);
     };
 
@@ -47,8 +55,33 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
       return response;
     };
 
-    const responseErrInterceptor = (error: any) => {
-      return Promise.reject(error);
+    const responseErrInterceptor = async (error: AxiosErrorConfig) => {
+      if (error.response?.status != 401) {
+        return Promise.reject(error);
+      }
+
+      const responseData: any = error.response?.data;
+
+      if (responseData?.message == "EXPIRED_TOKEN") {
+        if (!error.config) {
+          return Promise.reject(error);
+        }
+
+        const config: AxiosConfig = {
+          ...error.config,
+          retryCount: error.config.retryCount ? error.config.retryCount + 1 : 1,
+        };
+
+        if (config.retryCount && config.retryCount > 1) {
+          return Promise.reject(error);
+        }
+
+        await getAccessToken();
+
+        return await axiosClient.request(config);
+      }
+
+      return router.push("/login");
     };
 
     const resInterceptor = axiosClient.interceptors.response.use(

@@ -11,6 +11,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 
 import AuthProvider from "@/contexts/Auth";
 import queryClient from "@/lib/queryClient";
+import FontProvider from "@/contexts/Font";
 import { AxiosInterceptor } from "@/contexts/Axios";
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -18,7 +19,9 @@ const App = ({ Component, pageProps }: AppProps) => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <AxiosInterceptor>
-          <Component {...pageProps} />
+          <FontProvider>
+            <Component {...pageProps} />
+          </FontProvider>
         </AxiosInterceptor>
       </AuthProvider>
     </QueryClientProvider>
