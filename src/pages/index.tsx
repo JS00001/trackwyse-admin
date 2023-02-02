@@ -5,8 +5,8 @@
  * Copyright (c) 2023 Trackwyse
  */
 
-const Home = () => {
+const HomePage = () => {
   return <div className="bg-red-500 h-20 w-20"></div>;
 };
 
-export default Home;
+export default HomePage;
