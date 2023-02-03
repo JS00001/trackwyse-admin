@@ -7,6 +7,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast as Toast } from "react-toastify";
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
 import Config from "@/config";
@@ -56,7 +57,12 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
     };
 
     const responseErrInterceptor = async (error: AxiosErrorConfig) => {
-      if (error.response?.status != 401) {
+      if (error.response?.status != 401 && error.response?.status != 429) {
+        return Promise.reject(error);
+      }
+
+      if (error.response?.status == 429) {
+        Toast.error("Too many requests. Please try again later.");
         return Promise.reject(error);
       }
 
