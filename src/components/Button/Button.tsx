@@ -23,7 +23,7 @@ const colorClasses = {
   ),
 };
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   color?: keyof typeof colorClasses;
   onClick?: () => void;
@@ -43,6 +43,7 @@ const Button: React.FC<ButtonProps> = ({
   loading = false,
   disabled = false,
   color = "primary",
+  ...props
 }) => {
   const containerClasses = cn(
     "relative flex items-center justify-center rounded-md text-white text-base py-3 px-8",
@@ -54,7 +55,12 @@ const Button: React.FC<ButtonProps> = ({
   const IconRight = iconRight && Ionicons[iconRight];
 
   return (
-    <button disabled={disabled || loading} onClick={onClick} className={containerClasses}>
+    <button
+      disabled={disabled || loading}
+      onClick={onClick}
+      className={containerClasses}
+      {...props}
+    >
       <div className={loading ? "opacity-0" : ""}>
         {IconLeft && <IconLeft className="mr-2" size={16} />}
         {children}
