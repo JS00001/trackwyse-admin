@@ -36,7 +36,7 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
 
   useEffect(() => {
     const requestInterceptor = (config: AxiosConfig) => {
-      if (accessToken) {
+      if (accessToken && !config.headers.Authorization) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
 

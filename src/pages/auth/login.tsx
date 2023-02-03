@@ -38,8 +38,8 @@ const LoginPage: React.FC = () => {
     validate: validateLoginInput,
     onSubmit: (values) => {
       loginMutation.mutate(values, {
-        onSuccess: ({ data }) => {
-          updateRefreshToken(data.refreshToken);
+        onSuccess: async ({ data }) => {
+          await updateRefreshToken(data.refreshToken);
           router.push("/dashboard");
         },
         onError: (error) => {
@@ -56,7 +56,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex min-h-screen w-full justify-center">
-      <div className="w-96">
+      <form className="w-96" onSubmit={loginForm.handleSubmit}>
         <Image src="/logo.svg" alt="Trackwyse Logo" width={181.88} height={48} className="my-20" />
         <Text variant="title">Login to Trackwyse</Text>
         <Input
@@ -77,11 +77,7 @@ const LoginPage: React.FC = () => {
           onChange={loginForm.handleChange("password")}
         />
 
-        <Button
-          className="mt-4 w-full"
-          loading={loginMutation.isLoading}
-          onClick={loginForm.handleSubmit}
-        >
+        <Button type="submit" className="mt-4 w-full" loading={loginMutation.isLoading}>
           Login to Trackwyse
         </Button>
         <Text variant="subtitle2" className="mt-4">
@@ -94,7 +90,7 @@ const LoginPage: React.FC = () => {
             Privacy Policy
           </Text>
         </Text>
-      </div>
+      </form>
     </div>
   );
 };
