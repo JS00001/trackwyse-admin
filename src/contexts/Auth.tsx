@@ -17,7 +17,6 @@ interface AuthContextData {
   accessToken: string;
   refreshToken: string;
 
-  signOut: () => void;
   removeAllData: () => void;
   getAccessToken: () => Promise<void>;
   updateUser: (user: User) => void;
@@ -45,17 +44,13 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
     },
   });
 
-  const signOutMutation = useMutation({
-    mutationFn: async () => {},
-  });
-
   useEffect(() => {
     getRefreshToken();
   }, []);
 
   useEffect(() => {
     if (!refreshToken) {
-      return setLoading(false);
+      return;
     }
 
     getAccessToken();
@@ -63,21 +58,28 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     if (!accessToken) {
-      return setLoading(false);
+      return;
     }
 
     getUser();
   }, [accessToken]);
 
   const getRefreshToken = async () => {
+    setLoading(true);
+
     const refreshToken = await localforage.getItem("refreshToken");
 
     if (refreshToken) {
       setRefreshToken(refreshToken as string);
+      return;
     }
+
+    setLoading(false);
   };
 
   const getAccessToken = async () => {
+    setLoading(true);
+
     if (refreshToken) {
       getAccessTokenMutation.mutate(undefined, {
         onSuccess: ({ data }) => {
@@ -85,19 +87,26 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
         },
         onError: () => {
           setAccessToken("");
+          setLoading(false);
         },
       });
+    } else {
+      setLoading(false);
     }
   };
 
   const getUser = async () => {
+    setLoading(true);
+
     if (accessToken) {
       getUserMutation.mutate(undefined, {
         onSuccess: ({ data }) => {
           setUser(data.user);
+          setLoading(false);
         },
         onError: () => {
           setUser({} as User);
+          setLoading(false);
         },
       });
     } else {
@@ -110,18 +119,21 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
   };
 
   const updateRefreshToken = async (refreshToken: string) => {
+    setLoading(true);
     await localforage.setItem("refreshToken", refreshToken);
 
     setRefreshToken(refreshToken);
   };
 
   const updateAccessToken = (accessToken: string) => {
+    setLoading(true);
+
     setAccessToken(accessToken);
   };
 
-  const signOut = async () => {};
-
   const removeAllData = async () => {
+    setLoading(true);
+
     await localforage.clear();
     updateAccessToken("");
     updateRefreshToken("");
@@ -136,7 +148,6 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
         accessToken,
         refreshToken,
 
-        signOut,
         removeAllData,
         getAccessToken,
         updateUser,
