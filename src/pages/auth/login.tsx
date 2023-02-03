@@ -4,14 +4,20 @@
  *
  * Copyright (c) 2023 Trackwyse
  */
+import { useFormik } from "formik";
+import { useMutation } from "@tanstack/react-query";
 
 import api from "@/api";
 import Input from "@/components/Input";
+import Button from "@/components/Button";
 import { validateLoginInput } from "@/lib/validators";
-import { useMutation } from "@tanstack/react-query";
-import { useFormik } from "formik";
+import { useAuth } from "@/contexts/Auth";
+import { useRouter } from "next/router";
 
 const LoginPage: React.FC = () => {
+  const router = useRouter();
+  const { updateAccessToken, updateRefreshToken } = useAuth();
+
   const loginMutation = useMutation({
     mutationFn: (input: LoginInput) => {
       return api.login(input);
@@ -26,7 +32,17 @@ const LoginPage: React.FC = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validate: validateLoginInput,
-    onSubmit: (values) => {},
+    onSubmit: (values) => {
+      loginMutation.mutate(values, {
+        onSuccess: ({ data }) => {
+          updateRefreshToken(data.refreshToken);
+          router.push("/dashboard");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+    },
   });
 
   return (
@@ -47,6 +63,14 @@ const LoginPage: React.FC = () => {
           value={loginForm.values.password}
           onChange={loginForm.handleChange("password")}
         />
+
+        <Button
+          className="w-full"
+          loading={loginMutation.isLoading}
+          onClick={loginForm.handleSubmit}
+        >
+          Login
+        </Button>
       </div>
     </div>
   );

@@ -10,9 +10,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 const Document = () => {
   return (
     <Html lang="en">
-      <Head>
-        <title>Trackwyse Admin</title>
-      </Head>
+      <Head />
 
       <body>
         <Main />

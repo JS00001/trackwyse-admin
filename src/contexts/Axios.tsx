@@ -81,7 +81,12 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
         return await axiosClient.request(config);
       }
 
-      return router.push("/login");
+      if (responseData?.message == "UNAUTHORIZED_REQUEST") {
+        console.log("Redirecting to login page... (UNAUTHORIZED_REQUEST)");
+        return router.push("/auth/login");
+      }
+
+      return Promise.reject(error);
     };
 
     const resInterceptor = axiosClient.interceptors.response.use(
@@ -93,7 +98,7 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
       axiosClient.interceptors.response.eject(resInterceptor);
       axiosClient.interceptors.request.eject(reqInterceptor);
     };
-  }, [router.pathname]);
+  }, [router.pathname, accessToken]);
 
   return <>{children}</>;
 };

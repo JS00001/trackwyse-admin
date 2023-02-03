@@ -33,7 +33,7 @@ const Input: React.FC<InputProps> = ({
   const containerClassnames = cn("group relative", containerClassName);
 
   const inputClassnames = cn(
-    "peer border-gray-200 border px-3 py-3 rounded-sm bg-transparent text-base w-full",
+    "peer border-gray-200 border px-3 py-3 rounded-md bg-transparent text-base w-full",
     "hover:ring-4 hover:ring-gray-100 hover:border-gray-400",
     "focus:outline-none focus:border-primary-200 pb-1 py-5",
     "placeholder:opacity-0",

@@ -8,8 +8,8 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          100: "#2C2C2C",
-          200: "#111215"
+          100: "#393E40",
+          200: "#25292A"
         },
         gray: {
           100: "#F6F3F3",
@@ -17,6 +17,9 @@ module.exports = {
           300: "#CCCCCC",
           400: "#8B9396"
         }
+      },
+      borderRadius: {
+        "md": "0.25rem"
       }
     },
   },
