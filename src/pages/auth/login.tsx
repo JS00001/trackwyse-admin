@@ -4,19 +4,23 @@
  *
  * Copyright (c) 2023 Trackwyse
  */
+
+import Image from "next/image";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 
 import api from "@/api";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import { validateLoginInput } from "@/lib/validators";
 import { useAuth } from "@/contexts/Auth";
-import { useRouter } from "next/router";
+import { validateLoginInput } from "@/lib/validators";
+import Text from "@/components/Text";
+import { AxiosError } from "axios";
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
-  const { updateAccessToken, updateRefreshToken } = useAuth();
+  const { updateRefreshToken } = useAuth();
 
   const loginMutation = useMutation({
     mutationFn: (input: LoginInput) => {
@@ -39,7 +43,12 @@ const LoginPage: React.FC = () => {
           router.push("/dashboard");
         },
         onError: (error) => {
-          console.log(error);
+          if (error instanceof AxiosError) {
+            loginForm.setErrors({
+              email: error.response?.data?.message || "Something went wrong",
+              password: error.response?.data?.message || "Something went wrong",
+            });
+          }
         },
       });
     },
@@ -47,8 +56,11 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex min-h-screen w-full justify-center">
-      <div className="mt-10 w-96">
+      <div className="w-96">
+        <Image src="/logo.svg" alt="Trackwyse Logo" width={181.88} height={48} className="my-20" />
+        <Text variant="title">Login to Trackwyse</Text>
         <Input
+          containerClassName="mt-4"
           placeholder="Email address"
           disabled={loginMutation.isLoading}
           error={loginForm.errors.email}
@@ -56,6 +68,7 @@ const LoginPage: React.FC = () => {
           onChange={loginForm.handleChange("email")}
         />
         <Input
+          containerClassName="mt-4"
           placeholder="Password"
           type="password"
           disabled={loginMutation.isLoading}
@@ -65,12 +78,22 @@ const LoginPage: React.FC = () => {
         />
 
         <Button
-          className="w-full"
+          className="mt-4 w-full"
           loading={loginMutation.isLoading}
           onClick={loginForm.handleSubmit}
         >
-          Login
+          Login to Trackwyse
         </Button>
+        <Text variant="subtitle2" className="mt-4">
+          By logging in, you agree to our{" "}
+          <Text span clickable className="font-medium text-blue-500">
+            Terms of Service
+          </Text>{" "}
+          and{" "}
+          <Text span clickable className="font-medium text-blue-500">
+            Privacy Policy
+          </Text>
+        </Text>
       </div>
     </div>
   );

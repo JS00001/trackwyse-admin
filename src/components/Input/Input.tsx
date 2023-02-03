@@ -24,12 +24,6 @@ const Input: React.FC<InputProps> = ({
   containerClassName,
   ...props
 }) => {
-  const [hasError, setHasError] = useState(!!error);
-
-  const removeError = () => {
-    setHasError(false);
-  };
-
   const containerClassnames = cn("group relative", containerClassName);
 
   const inputClassnames = cn(
@@ -37,7 +31,7 @@ const Input: React.FC<InputProps> = ({
     "hover:ring-4 hover:ring-gray-100 hover:border-gray-400",
     "focus:outline-none focus:border-primary-200 pb-1 py-5",
     "placeholder:opacity-0",
-    hasError && "border-red-500",
+    error && "border-red-500",
     disabled && "border-gray-100 cursor-not-allowed",
     disabled && "hover:ring-0 hover:border-gray-100",
     className
@@ -47,8 +41,7 @@ const Input: React.FC<InputProps> = ({
     "absolute left-3 -z-10 text-gray-400 text-xs top-1",
     "pointer-events-none transition-all duration-300",
     "peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base",
-    "group-focus-within:!text-primary-200 group-focus-within:!top-1 group-focus-within:!text-xs",
-    hasError && "text-red-500"
+    "group-focus-within:!text-primary-200 group-focus-within:!top-1 group-focus-within:!text-xs"
   );
 
   return (
@@ -56,7 +49,6 @@ const Input: React.FC<InputProps> = ({
       <input
         type="text"
         disabled={disabled}
-        onClick={removeError}
         placeholder={placeholder}
         className={inputClassnames}
         {...props}
