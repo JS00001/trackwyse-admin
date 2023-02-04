@@ -7,7 +7,7 @@ import cn from "classnames";
  * Copyright (c) 2023 Trackwyse
  */
 const textVariantClasses = {
-  header: "",
+  header: "text-4xl font-semibold tracking-tight",
   title: "text-xl font-medium text-primary-200",
   subtitle1: "text-base text-gray-400",
   subtitle2: "text-sm text-gray-400",
@@ -20,6 +20,7 @@ interface TextProps {
   clickable?: boolean;
   onClick?: () => void;
   span?: boolean;
+  truncate?: boolean;
 }
 
 const Text: React.FC<TextProps> = ({
@@ -29,10 +30,12 @@ const Text: React.FC<TextProps> = ({
   onClick,
   children,
   className,
+  truncate = false,
 }) => {
   const textClassName = cn(
     clickable && "cursor-pointer hover:text-opacity-50",
     variant && textVariantClasses[variant],
+    truncate && "overflow-hidden text-ellipsis whitespace-nowrap",
     className
   );
 

@@ -33,8 +33,8 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
   const [refreshToken, setRefreshToken] = useState<string>("");
 
   const getAccessTokenMutation = useMutation({
-    mutationFn: async () => {
-      return api.refreshAccessToken(refreshToken);
+    mutationFn: async (token: string) => {
+      return api.refreshAccessToken(token);
     },
   });
 
@@ -81,11 +81,11 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
     setLoading(true);
 
     if (refreshToken) {
-      getAccessTokenMutation.mutate(undefined, {
+      getAccessTokenMutation.mutate(refreshToken, {
         onSuccess: ({ data }) => {
           setAccessToken(data.accessToken);
         },
-        onError: () => {
+        onError: (err) => {
           setAccessToken("");
           setLoading(false);
         },
@@ -120,9 +120,8 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
 
   const updateRefreshToken = async (refreshToken: string) => {
     setLoading(true);
-    await localforage.setItem("refreshToken", refreshToken);
-
     setRefreshToken(refreshToken);
+    localforage.setItem("refreshToken", refreshToken);
   };
 
   const updateAccessToken = (accessToken: string) => {

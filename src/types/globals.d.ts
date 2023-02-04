@@ -4,6 +4,7 @@
  *
  * Copyright (c) 2023 Trackwyse
  */
+type UserRole = "user" | "admin";
 
 interface User {
   id: string;
@@ -11,6 +12,7 @@ interface User {
   firstName: string;
   lastName: string;
   address: UserAddress;
+  role: UserRole;
 
   verified: boolean;
   termsAccepted: boolean;

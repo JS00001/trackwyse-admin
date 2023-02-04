@@ -7,16 +7,17 @@
 
 import Image from "next/image";
 import { useFormik } from "formik";
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 
 import api from "@/api";
+import Config from "@/config";
+import Text from "@/components/Text";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { useAuth } from "@/contexts/Auth";
 import { validateLoginInput } from "@/lib/validators";
-import Text from "@/components/Text";
-import { AxiosError } from "axios";
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const LoginPage: React.FC = () => {
     validate: validateLoginInput,
     onSubmit: (values) => {
       loginMutation.mutate(values, {
-        onSuccess: ({ data }) => {
+        onSuccess: async ({ data }) => {
           updateRefreshToken(data.refreshToken);
           router.push("/dashboard");
         },
@@ -56,7 +57,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex min-h-screen w-full justify-center">
-      <div className="w-96">
+      <form className="w-96" onSubmit={loginForm.handleSubmit}>
         <Image src="/logo.svg" alt="Trackwyse Logo" width={181.88} height={48} className="my-20" />
         <Text variant="title">Login to Trackwyse</Text>
         <Input
@@ -77,24 +78,31 @@ const LoginPage: React.FC = () => {
           onChange={loginForm.handleChange("password")}
         />
 
-        <Button
-          className="mt-4 w-full"
-          loading={loginMutation.isLoading}
-          onClick={loginForm.handleSubmit}
-        >
+        <Button type="submit" className="mt-4 w-full" loading={loginMutation.isLoading}>
           Login to Trackwyse
         </Button>
         <Text variant="subtitle2" className="mt-4">
           By logging in, you agree to our{" "}
-          <Text span clickable className="font-medium text-blue-500">
+          <Text
+            span
+            clickable
+            className="font-medium text-blue-500"
+            onClick={() => router.push(Config.TERMS_URL)}
+          >
             Terms of Service
           </Text>{" "}
           and{" "}
-          <Text span clickable className="font-medium text-blue-500">
+          <Text
+            span
+            clickable
+            className="font-medium text-blue-500"
+            onClick={() => router.push(Config.PRIVACY_URL)}
+          >
             Privacy Policy
-          </Text>
+          </Text>{" "}
+          and that you are authorized to use this service.
         </Text>
-      </div>
+      </form>
     </div>
   );
 };

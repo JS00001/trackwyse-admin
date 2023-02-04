@@ -36,7 +36,7 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
 
   useEffect(() => {
     const requestInterceptor = (config: AxiosConfig) => {
-      if (accessToken) {
+      if (accessToken && !config.headers.Authorization) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
 
@@ -88,7 +88,6 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
       }
 
       if (responseData?.message == "UNAUTHORIZED_REQUEST") {
-        console.log("Redirecting to login page... (UNAUTHORIZED_REQUEST)");
         return router.push("/auth/login");
       }
 
