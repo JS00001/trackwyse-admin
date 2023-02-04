@@ -22,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex h-screen w-80 flex-col justify-between border-r-2 border-gray-100 p-8">
+    <div className="fixed flex h-screen w-80 flex-col justify-between border-r-2 border-gray-100 px-8 pt-10 pb-8">
       <div className="flex flex-col gap-y-3">
         <Image src="/logo.svg" alt="Trackwyse Logo" width={181.88} height={48} className="mb-4" />
 
@@ -30,7 +30,8 @@ const Sidebar: React.FC<SidebarProps> = () => {
           <SidebarItem item={item} />
         ))}
       </div>
-      <div className="flex cursor-pointer items-center rounded-md border border-gray-100 p-3">
+
+      <div className="flex cursor-pointer items-center rounded-md border border-gray-100 p-3 hover:opacity-75">
         <Avatar label={createInitials([user?.firstName, user?.lastName])} />
         <div className="ml-4 min-w-0">
           <Text truncate variant="subtitle1" className="font-medium  !text-primary-200">
