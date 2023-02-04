@@ -125,7 +125,7 @@ const Item: React.FC<ItemProps> = ({ title, icon, onClick }) => {
     <motion.li
       onClick={onClick}
       variants={menuItem}
-      className="flex cursor-pointer items-center gap-x-2 py-2 px-3 text-primary-200 hover:bg-primary-200 hover:text-white"
+      className="flex cursor-pointer items-center gap-x-2 py-2 px-3 font-medium text-primary-200 hover:bg-primary-200 hover:text-white"
     >
       {Icon && <Icon className="text-base" />}
       <Text className="text-base">{title}</Text>
