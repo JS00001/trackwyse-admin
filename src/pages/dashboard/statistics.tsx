@@ -4,18 +4,14 @@
  *
  * Copyright (c) 2023 Trackwyse
  */
-import Text from "@/components/Text";
 import withAuth from "@/hoc/withAuth";
 import Layout from "@/components/Layout";
-import { useAuth } from "@/contexts/Auth";
-import Sidebar from "@/components/Sidebar";
 
 const DashboardStatisticsPage: React.FC = () => {
-  const { user } = useAuth();
-
   return (
     <Layout>
-      <Text variant="header">Statistics</Text>
+      <Layout.Header>Statistics</Layout.Header>
+      <Layout.Content></Layout.Content>
     </Layout>
   );
 };
