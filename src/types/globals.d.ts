@@ -26,7 +26,8 @@ interface User {
 
 interface Label {
   _id: string;
-  owner: string;
+  __v?: number;
+  owner?: string;
   activated: boolean;
   isLost: boolean;
   uniqueID: string;
@@ -35,6 +36,7 @@ interface Label {
   color?: Color;
   message?: string;
   phoneNumber?: string;
+  hasBeenNotified?: boolean;
 
   foundNear?: string; // Based on IP address
   foundDate?: Date; // When the label was found

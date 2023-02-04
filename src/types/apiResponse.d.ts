@@ -36,3 +36,9 @@ type GetValidClientsAPIResponse = APIResponse & {
     version: string;
   };
 };
+
+type CreateLabelSheetAPIResponse = APIResponse & {
+  data: {
+    labels: Label[];
+  };
+};

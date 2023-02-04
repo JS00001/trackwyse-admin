@@ -68,9 +68,24 @@ const getValidClients = (): Promise<GetValidClientsAPIResponse> => {
   return axios.get("/status/valid-clients");
 };
 
+/*
+  POST /api/v1/admin/create-label-sheet
+
+  Request Headers:
+    - Authorization: Bearer <accessToken>
+
+  Request Body:
+    - labels: Label[]
+*/
+const createLabelSheet = (): Promise<CreateLabelSheetAPIResponse> => {
+  return axios.post("/api/v1/admin/create-label-sheet");
+};
+
 export default {
   login,
   getUser,
   refreshAccessToken,
   getValidClients,
+
+  createLabelSheet,
 };

@@ -35,8 +35,8 @@ const Sidebar: React.FC<SidebarProps> = () => {
       <div className="flex flex-col gap-y-3">
         <Image src="/logo.svg" alt="Trackwyse Logo" width={181.88} height={48} className="mb-4" />
 
-        {Config.SIDEBAR_ITEMS.map((item) => (
-          <SidebarItem item={item} />
+        {Config.SIDEBAR_ITEMS.map((item, index) => (
+          <SidebarItem key={index} item={item} />
         ))}
       </div>
 
