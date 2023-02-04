@@ -7,7 +7,7 @@ import cn from "classnames";
  * Copyright (c) 2023 Trackwyse
  */
 const textVariantClasses = {
-  header: "",
+  header: "text-4xl font-semibold tracking-tight",
   title: "text-xl font-medium text-primary-200",
   subtitle1: "text-base text-gray-400",
   subtitle2: "text-sm text-gray-400",
