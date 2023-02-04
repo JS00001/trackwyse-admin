@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
 
       <Menu open={menuOpen}>
         <Menu.Item title="User Settings" icon="RxGear" />
-        <Menu.Item title="Logout" icon="RxExit" />
+        <Menu.Item title="Logout" icon="RxLockClosed" />
         <Menu.Button>
           <div
             className=" flex cursor-pointer items-center rounded-md border border-gray-200 p-3 hover:opacity-75"
