@@ -16,7 +16,7 @@ import Button from "@/components/Button";
 import { useMutation } from "@tanstack/react-query";
 
 const DashboardGenerateLabelsPage: React.FC = () => {
-  const [labels, setLabels] = useState<string[]>(["1", "2", "3", "4", "%", "6"]);
+  const [labels, setLabels] = useState<string[]>([]);
 
   const createLabelSheetMutation = useMutation({
     mutationFn: async () => {
@@ -88,4 +88,4 @@ const DashboardGenerateLabelsPage: React.FC = () => {
   );
 };
 
-export default DashboardGenerateLabelsPage;
+export default withAuth(DashboardGenerateLabelsPage);
