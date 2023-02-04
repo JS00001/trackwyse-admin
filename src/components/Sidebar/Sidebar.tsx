@@ -5,10 +5,12 @@
  * Copyright (c) 2023 Trackwyse
  */
 
+import React from "react";
 import cn from "classnames";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import * as RadixIcons from "react-icons/rx";
+import { motion } from "framer-motion";
 
 import Config from "@/config";
 import Text from "@/components/Text";
@@ -21,6 +23,51 @@ interface SidebarProps {}
 const Sidebar: React.FC<SidebarProps> = () => {
   const { user } = useAuth();
 
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const handleMenuToggle = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
+  const menuVariants = {
+    open: {
+      opacity: 1,
+      height: "auto",
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.025,
+        staggerDirection: -1,
+        when: "beforeChildren",
+      },
+    },
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0,
+        when: "afterChildren",
+      },
+    },
+  };
+
+  const menuItem = {
+    open: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+    closed: {
+      opacity: 0,
+      transition: {
+        duration: 0.25,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <div className="fixed flex h-screen w-80 flex-col justify-between border-r-2 border-gray-100 px-8 pt-10 pb-8">
       <div className="flex flex-col gap-y-3">
@@ -31,15 +78,40 @@ const Sidebar: React.FC<SidebarProps> = () => {
         ))}
       </div>
 
-      <div className="flex cursor-pointer items-center rounded-md border border-gray-100 p-3 hover:opacity-75">
-        <Avatar label={createInitials([user?.firstName, user?.lastName])} />
-        <div className="ml-4 min-w-0">
-          <Text truncate variant="subtitle1" className="font-medium  !text-primary-200">
-            {user?.firstName} {user?.lastName}
-          </Text>
-          <Text variant="subtitle2" truncate>
-            {user?.email}
-          </Text>
+      <div className="relative">
+        <motion.ul
+          variants={menuVariants}
+          initial="closed"
+          animate={menuOpen ? "open" : "closed"}
+          className="absolute right-0 bottom-[84px] -z-10 w-full rounded-md border border-gray-200 py-2"
+        >
+          <motion.li
+            variants={menuItem}
+            className="cursor-pointer py-2 px-3 text-sm hover:bg-primary-200 hover:text-white"
+          >
+            User Settings
+          </motion.li>
+          <motion.li
+            variants={menuItem}
+            className="cursor-pointer py-2 px-3 text-sm hover:bg-primary-200 hover:text-white"
+          >
+            Signout
+          </motion.li>
+        </motion.ul>
+
+        <div
+          className=" flex cursor-pointer items-center rounded-md border border-gray-200 p-3 hover:opacity-75"
+          onClick={handleMenuToggle}
+        >
+          <Avatar label={createInitials([user?.firstName, user?.lastName])} />
+          <div className="ml-4 min-w-0">
+            <Text truncate variant="subtitle1" className="font-medium  !text-primary-200">
+              {user?.firstName} {user?.lastName}
+            </Text>
+            <Text variant="subtitle2" truncate>
+              {user?.email}
+            </Text>
+          </div>
         </div>
       </div>
     </div>
