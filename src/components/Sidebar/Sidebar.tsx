@@ -57,11 +57,14 @@ interface SidebarItemProps {
 const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
   const router = useRouter();
 
+  const isActive = router.pathname === item.link;
+
   const Icon = item.icon && RadixIcons[item.icon];
 
   const containerClasses = cn(
-    "flex cursor-pointer items-center py-3",
-    "hover:bg-gray-100 rounded-md"
+    "flex cursor-pointer items-center py-3  rounded-md",
+    "hover:bg-gray-100",
+    isActive && "bg-gray-100"
   );
 
   const handleClick = () => {
