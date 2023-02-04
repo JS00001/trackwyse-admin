@@ -15,7 +15,7 @@ const DashboardLandingPage: React.FC = () => {
 
   return (
     <Layout>
-      <Text variant="header">Generate Labels</Text>
+      <Text variant="header">Dashboard</Text>
     </Layout>
   );
 };

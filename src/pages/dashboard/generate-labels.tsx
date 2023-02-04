@@ -17,7 +17,7 @@ const DashboardGenerateLabelsPage: React.FC = () => {
 
   return (
     <Layout>
-      <Text variant="header">Dashboard</Text>
+      <Text variant="header">Generate Labels</Text>
     </Layout>
   );
 };
