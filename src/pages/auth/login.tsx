@@ -7,16 +7,17 @@
 
 import Image from "next/image";
 import { useFormik } from "formik";
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 
 import api from "@/api";
+import Config from "@/config";
+import Text from "@/components/Text";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { useAuth } from "@/contexts/Auth";
 import { validateLoginInput } from "@/lib/validators";
-import Text from "@/components/Text";
-import { AxiosError } from "axios";
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const LoginPage: React.FC = () => {
     onSubmit: (values) => {
       loginMutation.mutate(values, {
         onSuccess: async ({ data }) => {
-          await updateRefreshToken(data.refreshToken);
+          updateRefreshToken(data.refreshToken);
           router.push("/dashboard");
         },
         onError: (error) => {
@@ -82,13 +83,24 @@ const LoginPage: React.FC = () => {
         </Button>
         <Text variant="subtitle2" className="mt-4">
           By logging in, you agree to our{" "}
-          <Text span clickable className="font-medium text-blue-500">
+          <Text
+            span
+            clickable
+            className="font-medium text-blue-500"
+            onClick={() => router.push(Config.TERMS_URL)}
+          >
             Terms of Service
           </Text>{" "}
           and{" "}
-          <Text span clickable className="font-medium text-blue-500">
+          <Text
+            span
+            clickable
+            className="font-medium text-blue-500"
+            onClick={() => router.push(Config.PRIVACY_URL)}
+          >
             Privacy Policy
-          </Text>
+          </Text>{" "}
+          and that you are authorized to use this service.
         </Text>
       </form>
     </div>

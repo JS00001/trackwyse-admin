@@ -21,7 +21,7 @@ interface AuthContextData {
   getAccessToken: () => Promise<void>;
   updateUser: (user: User) => void;
   updateAccessToken: (accessToken: string) => void;
-  updateRefreshToken: (refreshToken: string) => Promise<void>;
+  updateRefreshToken: (refreshToken: string) => void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -81,8 +81,6 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
     setLoading(true);
 
     if (refreshToken) {
-      console.log("refreshToken", refreshToken);
-
       getAccessTokenMutation.mutate(refreshToken, {
         onSuccess: ({ data }) => {
           setAccessToken(data.accessToken);

@@ -20,6 +20,7 @@ interface TextProps {
   clickable?: boolean;
   onClick?: () => void;
   span?: boolean;
+  truncate?: boolean;
 }
 
 const Text: React.FC<TextProps> = ({
@@ -29,10 +30,12 @@ const Text: React.FC<TextProps> = ({
   onClick,
   children,
   className,
+  truncate = false,
 }) => {
   const textClassName = cn(
     clickable && "cursor-pointer hover:text-opacity-50",
     variant && textVariantClasses[variant],
+    truncate && "overflow-hidden text-ellipsis whitespace-nowrap",
     className
   );
 

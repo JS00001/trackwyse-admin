@@ -88,7 +88,6 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
       }
 
       if (responseData?.message == "UNAUTHORIZED_REQUEST") {
-        console.log("Redirecting to login page... (UNAUTHORIZED_REQUEST)");
         return router.push("/auth/login");
       }
 
