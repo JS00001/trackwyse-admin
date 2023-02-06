@@ -129,4 +129,4 @@ const DashboardGenerateLabelsPage: React.FC = () => {
   );
 };
 
-export default DashboardGenerateLabelsPage;
+export default withAuth(DashboardGenerateLabelsPage);
