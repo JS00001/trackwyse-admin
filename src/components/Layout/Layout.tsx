@@ -5,6 +5,7 @@
  * Copyright (c) 2023 Trackwyse
  */
 import React from "react";
+import cn from "classnames";
 
 import Text from "@/components/Text";
 import Sidebar from "@/components/Sidebar";
@@ -42,8 +43,8 @@ const Layout: React.FC<LayoutProps> & LayoutComponents = ({ children, className 
     <div className="flex">
       <Sidebar />
 
-      <main className={"ml-80 flex flex-grow justify-center " + className}>
-        <div className="h-full w-full p-12">
+      <main className={"ml-80 flex min-h-screen flex-grow justify-center " + className}>
+        <div className="flex h-full w-full flex-col p-12">
           {subComponents.map((component, index) => {
             return component;
           })}
@@ -66,10 +67,25 @@ Layout.Header = Header;
 
 interface ContentProps {
   children?: React.ReactNode;
+  className?: string;
+  centerContentVertical?: boolean;
+  centerContentHorizontal?: boolean;
 }
 
-const Content: React.FC<ContentProps> = ({ children }) => {
-  return <div className="mt-8">{children}</div>;
+const Content: React.FC<ContentProps> = ({
+  centerContentVertical,
+  centerContentHorizontal,
+  className,
+  children,
+}) => {
+  const classes = cn(
+    "mt-8 flex-grow flex-col",
+    centerContentVertical && "flexl justify-center",
+    centerContentHorizontal && "flex items-center",
+    className
+  );
+
+  return <div className={classes}>{children}</div>;
 };
 
 Content.displayName = "Content";
