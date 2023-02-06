@@ -35,9 +35,9 @@ const Config: Config = {
       link: "/dashboard/generate-labels",
     },
     {
-      title: "Statistics",
-      icon: "RxPieChart",
-      link: "/dashboard/statistics",
+      title: "Manage Premium",
+      icon: "RxRocket",
+      link: "/dashboard/premium",
     },
     {
       title: "Users",

@@ -94,7 +94,7 @@ const Menu: React.FC<MenuProps> & MenuComponents = ({ open, position = "top", ch
   });
 
   const classNames = cn(
-    "absolute  w-full rounded-md border border-gray-200 py-2 bg-white",
+    "absolute  w-full rounded-md border border-gray-200 py-2 bg-gray-100",
     open ? "z-10" : "-z-10"
   );
 
@@ -143,12 +143,13 @@ interface ItemProps {
 const Item: React.FC<ItemProps> = ({ title, icon, onClick }) => {
   const Icon = icon ? RadixIcons[icon] : null;
 
+  const classNames = cn(
+    "flex cursor-pointer items-center gap-x-2 py-2 px-3 font-medium text-primary-200 ",
+    "hover:bg-primary-200 hover:text-white"
+  );
+
   return (
-    <motion.li
-      onClick={onClick}
-      variants={menuItem}
-      className="flex cursor-pointer items-center gap-x-2 py-2 px-3 font-medium text-primary-200 hover:bg-primary-200 hover:text-white"
-    >
+    <motion.li onClick={onClick} variants={menuItem} className={classNames}>
       {Icon && <Icon className="text-base" />}
       <Text className="text-base">{title}</Text>
     </motion.li>

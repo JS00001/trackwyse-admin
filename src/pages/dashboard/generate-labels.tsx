@@ -18,20 +18,17 @@ import Button from "@/components/Button";
 
 import LabelsBlue from "@/assets/LabelsBlue";
 import LabelsPink from "@/assets/LabelsPink";
+import Dropdown from "@/components/Dropdown";
 import LabelsYellow from "@/assets/LabelsYellow";
 import LabelsOrange from "@/assets/LabelsOrange";
-import Menu from "@/components/Menu";
 
 const DashboardGenerateLabelsPage: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
 
-  const [menuOpen, setMenuOpen] = useState(false);
   const [labels, setLabels] = useState<string[]>([]);
-  const [selectedColor, setSelectedColor] = useState<"blue" | "pink" | "yellow" | "orange">("blue");
-
-  const handleMenuToggle = () => {
-    setMenuOpen((prev) => !prev);
-  };
+  const [selectedColor, setSelectedColor] = useState<"Blue" | "Pink" | "Yellow" | "Orange" | null>(
+    null
+  );
 
   const createLabelSheetMutation = useMutation({
     mutationFn: async () => {
@@ -77,50 +74,16 @@ const DashboardGenerateLabelsPage: React.FC = () => {
       <Layout.Header>Generate Labels</Layout.Header>
       <Layout.Content className="mt-10">
         <div className="flex items-center gap-x-5">
-          <Menu open={menuOpen} position="bottom">
-            <Menu.Item
-              title="Blue"
-              onClick={() => {
-                setSelectedColor("blue");
-                handleMenuToggle();
-              }}
-            />
-            <Menu.Item
-              title="Pink"
-              onClick={() => {
-                setSelectedColor("pink");
-                handleMenuToggle();
-              }}
-            />
-            <Menu.Item
-              title="Yellow"
-              onClick={() => {
-                setSelectedColor("yellow");
-                handleMenuToggle();
-              }}
-            />
-            <Menu.Item
-              title="Orange"
-              onClick={() => {
-                setSelectedColor("orange");
-                handleMenuToggle();
-              }}
-            />
-            <Menu.Button>
-              <Button onClick={handleMenuToggle} iconRight="IoChevronDown">
-                {selectedColor === "blue"
-                  ? "Color - Blue"
-                  : selectedColor === "pink"
-                  ? "Color - Pink"
-                  : selectedColor === "yellow"
-                  ? "Color - Yellow"
-                  : "Color - Orange"}
-              </Button>
-            </Menu.Button>
-          </Menu>
+          <Dropdown
+            value={selectedColor}
+            options={["Blue", "Pink", "Yellow", "Orange"]}
+            placeholder="Select Color"
+            onChange={(value) => setSelectedColor(value as any)}
+          />
           <Button
             iconRight="IoColorWand"
             onClick={handleGenerateLabelSheet}
+            disabled={selectedColor === null}
             loading={createLabelSheetMutation.isLoading}
           >
             Generate Label Sheet
@@ -128,7 +91,9 @@ const DashboardGenerateLabelsPage: React.FC = () => {
           <Button
             iconRight="IoCodeDownloadOutline"
             onClick={onDownloadLabelSheet}
-            disabled={lodash.isEmpty(labels) || createLabelSheetMutation.isLoading}
+            disabled={
+              lodash.isEmpty(labels) || createLabelSheetMutation.isLoading || selectedColor === null
+            }
           >
             Download Label Sheet
           </Button>
@@ -157,11 +122,11 @@ const DashboardGenerateLabelsPage: React.FC = () => {
         )}
 
         {labels.length > 0 && (
-          <div id="offscreenLabels" ref={divRef} className="relative hidden">
-            {selectedColor === "blue" && <LabelsBlue />}
-            {selectedColor === "pink" && <LabelsPink />}
-            {selectedColor === "yellow" && <LabelsYellow />}
-            {selectedColor === "orange" && <LabelsOrange />}
+          <div id="offscreenLabels" ref={divRef} className="relative hidden max-w-min">
+            {selectedColor === "Blue" && <LabelsBlue />}
+            {selectedColor === "Pink" && <LabelsPink />}
+            {selectedColor === "Yellow" && <LabelsYellow />}
+            {selectedColor === "Orange" && <LabelsOrange />}
             {labels.length > 0 && (
               <div className="absolute top-[169px] left-[169px] h-[1008px] w-[886px]">
                 <div className="grid h-full grid-cols-3 grid-rows-4 gap-y-[372px] ">
@@ -191,4 +156,4 @@ const DashboardGenerateLabelsPage: React.FC = () => {
   );
 };
 
-export default DashboardGenerateLabelsPage;
+export default withAuth(DashboardGenerateLabelsPage);
