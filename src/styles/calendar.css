@@ -81,6 +81,7 @@
   background: none;
   text-align: center;
   line-height: 16px;
+  font-weight: 600;
 }
 .react-calendar__tile:disabled {
   background-color: #f9fafb;
@@ -111,4 +112,13 @@
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
+}
+
+.react-calendar__navigation__label__labelText {
+  font-weight: 700;
+}
+
+.react-calendar__navigation__arrow {
+  font-size: 1.1  em;
+  font-weight: 700;
 }
