@@ -81,11 +81,31 @@ const createLabelSheet = (): Promise<CreateLabelSheetAPIResponse> => {
   return axios.post("/api/v1/admin/create-label-sheet");
 };
 
+/*
+  POST /api/v1/admin/set-premium
+
+  Request Headers:
+    - Authorization: Bearer <accessToken>
+
+  Request Body:
+    - id: string
+    - expiresIn: number (in seconds)
+*/
+const setPremium = (input: SetPremiumInput): Promise<SetPremiumAPIResponse> => {
+  const { id, expiresIn } = input;
+
+  return axios.post("/api/v1/admin/set-premium", {
+    id,
+    expiresIn,
+  });
+};
+
 export default {
   login,
   getUser,
   refreshAccessToken,
   getValidClients,
 
+  setPremium,
   createLabelSheet,
 };

@@ -9,3 +9,8 @@ interface LoginInput {
   email: string;
   password: string;
 }
+
+interface SetPremiumInput {
+  id: string;
+  expiresIn?: number;
+}

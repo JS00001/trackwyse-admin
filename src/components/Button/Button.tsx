@@ -11,13 +11,13 @@ import * as Ionicons from "react-icons/io5";
 const colorClasses = {
   primary: cn(
     "bg-primary-200 text-white font-medium",
-    "disabled:bg-gray-200 disabled:text-gray-400",
+    "disabled:bg-gray-100 disabled:text-gray-300 disabled:cursor-not-allowed",
     "hover:bg-primary-100 hover:transition-colors hover:duration-500",
     "focus:ring-4 focus:ring-gray-300 focus:transition-shadow focus:duration-150"
   ),
   secondary: cn(
     "bg-gray-100 text-primary-200",
-    "disabled:bg-gray-200 disabled:text-gray-400",
+    "disabled:bg-gray-100 disabled:text-gray-300 disabled:cursor-not-allowed",
     "hover:bg-gray-200 hover:transition-colors hover:duration-500",
     "focus:ring-4 focus:ring-gray-300 focus:transition-shadow focus:duration-150"
   ),
@@ -61,10 +61,10 @@ const Button: React.FC<ButtonProps> = ({
       className={containerClasses}
       {...props}
     >
-      <div className={loading ? "opacity-0" : ""}>
-        {IconLeft && <IconLeft className="mr-2" size={16} />}
+      <div className={loading ? "flex items-center opacity-0" : "flex items-center"}>
+        {IconLeft && <IconLeft className="mr-2" size={20} />}
         {children}
-        {IconRight && <IconRight className="ml-2" size={16} />}
+        {IconRight && <IconRight className="ml-2" size={20} />}
       </div>
       {loading && <Ionicons.IoAperture className="absolute animate-spin" size={24} />}
     </button>

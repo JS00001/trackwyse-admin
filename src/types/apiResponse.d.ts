@@ -12,6 +12,8 @@ interface APIResponse {
   };
 }
 
+type SetPremiumAPIResponse = APIResponse;
+
 type UserAPIResponse = APIResponse & {
   data: {
     user: User;
