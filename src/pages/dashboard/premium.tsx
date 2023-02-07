@@ -7,13 +7,18 @@
 import withAuth from "@/hoc/withAuth";
 import Layout from "@/components/Layout";
 import Input from "@/components/Input";
+import Calendar from "react-calendar";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/api";
 import { useFormik } from "formik";
 import Button from "@/components/Button";
 import { toast as Toast } from "react-toastify";
+import { useState } from "react";
+import Text from "@/components/Text";
 
 const DashboardPremiumPage: React.FC = () => {
+  const [expiresIn, setExpiresIn] = useState<number | null>(null);
+
   const setPremiumMutation = useMutation({
     mutationFn: (input: SetPremiumInput) => {
       return api.setPremium(input);
@@ -25,7 +30,12 @@ const DashboardPremiumPage: React.FC = () => {
       id: "",
     },
     onSubmit: (values) => {
-      setPremiumMutation.mutate(values, {
+      const input: SetPremiumInput = {
+        id: values.id,
+        expiresIn: expiresIn || undefined,
+      };
+
+      setPremiumMutation.mutate(input, {
         onSuccess: () => {
           Toast.success("Premium request successful.");
           setPremiumForm.resetForm();
@@ -39,6 +49,12 @@ const DashboardPremiumPage: React.FC = () => {
     },
   });
 
+  const handleDateChange = (date: Date) => {
+    // get the seconds from the current date to the date selected
+    const seconds = Math.floor((date.getTime() - Date.now()) / 1000);
+    setExpiresIn(seconds);
+  };
+
   return (
     <Layout>
       <Layout.Header>Manage Premium</Layout.Header>
@@ -46,11 +62,20 @@ const DashboardPremiumPage: React.FC = () => {
         <div className="w-96">
           <Input
             placeholder="User ID"
-            disabled={setPremiumMutation.isLoading}
             error={setPremiumForm.errors.id}
             value={setPremiumForm.values.id}
+            disabled={setPremiumMutation.isLoading}
             onChange={setPremiumForm.handleChange("id")}
           />
+
+          <Calendar
+            className="my-4"
+            minDate={new Date()}
+            onChange={handleDateChange}
+            // default value to one day from now
+            defaultValue={new Date(Date.now() + 86400000)}
+          />
+
           <Button
             onClick={setPremiumForm.handleSubmit}
             loading={setPremiumMutation.isLoading}
