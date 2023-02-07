@@ -17,6 +17,7 @@ interface AuthContextData {
   accessToken: string;
   refreshToken: string;
 
+  logout: () => void;
   removeAllData: () => void;
   getAccessToken: () => Promise<void>;
   updateUser: (user: User) => void;
@@ -41,6 +42,12 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
   const getUserMutation = useMutation({
     mutationFn: async () => {
       return api.getUser();
+    },
+  });
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      return api.logout();
     },
   });
 
@@ -139,6 +146,19 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
     updateUser({} as User);
   };
 
+  const logout = async () => {
+    if (accessToken) {
+      logoutMutation.mutate(undefined, {
+        onSuccess: () => {
+          setUser({} as User);
+          updateAccessToken("");
+          updateRefreshToken("");
+          setLoading(false);
+        },
+      });
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -147,8 +167,10 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
         accessToken,
         refreshToken,
 
+        logout,
         removeAllData,
         getAccessToken,
+
         updateUser,
         updateAccessToken,
         updateRefreshToken,

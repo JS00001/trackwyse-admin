@@ -11,6 +11,7 @@ interface APIResponse {
     message: string;
   };
 }
+type LogoutAPIResponse = APIResponse;
 
 type SetPremiumAPIResponse = APIResponse;
 

@@ -22,12 +22,16 @@ import Menu from "../Menu";
 interface SidebarProps {}
 
 const Sidebar: React.FC<SidebarProps> = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleMenuToggle = () => {
     setMenuOpen((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   return (
@@ -41,8 +45,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
       </div>
 
       <Menu open={menuOpen}>
-        <Menu.Item title="User Settings" icon="RxGear" />
-        <Menu.Item title="Logout" icon="RxLockClosed" />
+        <Menu.Item title="Logout" icon="RxLockClosed" onClick={handleLogout} />
         <Menu.Button>
           <div
             className=" flex cursor-pointer items-center rounded-md border border-gray-200 p-3 hover:opacity-75"

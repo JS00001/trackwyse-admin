@@ -7,7 +7,6 @@
 
 import withAuth from "@/hoc/withAuth";
 import Layout from "@/components/Layout";
-import DashboardLoader from "@/components/Loaders/Dashboard";
 
 const DashboardUsersPage: React.FC = () => {
   return (

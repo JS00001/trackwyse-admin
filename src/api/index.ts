@@ -100,8 +100,23 @@ const setPremium = (input: SetPremiumInput): Promise<SetPremiumAPIResponse> => {
   });
 };
 
+/*
+  POST /auth/v1/logout
+
+  Request Headers:
+    - Authorization: Bearer <accessToken>
+
+  Response Body:
+    - error: boolean
+    - message: string
+*/
+const logout = (): Promise<LogoutAPIResponse> => {
+  return axios.post("/auth/v1/logout");
+};
+
 export default {
   login,
+  logout,
   getUser,
   refreshAccessToken,
   getValidClients,
