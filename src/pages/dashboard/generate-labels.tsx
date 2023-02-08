@@ -21,6 +21,7 @@ import LabelsPink from "@/assets/LabelsPink";
 import Dropdown from "@/components/Dropdown";
 import LabelsYellow from "@/assets/LabelsYellow";
 import LabelsOrange from "@/assets/LabelsOrange";
+import jsPDF from "jspdf";
 
 const DashboardGenerateLabelsPage: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
@@ -62,10 +63,12 @@ const DashboardGenerateLabelsPage: React.FC = () => {
       },
       backgroundColor: null,
     }).then((canvas) => {
-      let a = document.createElement("a");
-      a.href = canvas.toDataURL("image/png");
-      a.download = "label-sheet.png";
-      a.click();
+      let imageData = canvas.toDataURL("image/png");
+      let document = new jsPDF("p", "mm");
+      // add the image to pdf to fit the page without scaling
+      document.addImage(imageData, "PNG", -10, -10, 230, 297);
+
+      document.save("labels.pdf");
     });
   };
 
