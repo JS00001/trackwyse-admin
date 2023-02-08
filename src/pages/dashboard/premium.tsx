@@ -4,17 +4,18 @@
  *
  * Copyright (c) 2023 Trackwyse
  */
-import withAuth from "@/hoc/withAuth";
-import Layout from "@/components/Layout";
-import Input from "@/components/Input";
-import Calendar from "react-calendar";
-import { useMutation } from "@tanstack/react-query";
-import api from "@/api";
-import { useFormik } from "formik";
-import Button from "@/components/Button";
-import { toast as Toast } from "react-toastify";
+
 import { useState } from "react";
-import Text from "@/components/Text";
+import { useFormik } from "formik";
+import Calendar from "react-calendar";
+import { toast as Toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+
+import api from "@/api";
+import withAuth from "@/hoc/withAuth";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
+import Layout from "@/components/Layout";
 
 const DashboardPremiumPage: React.FC = () => {
   const [expiresIn, setExpiresIn] = useState<number | null>(null);

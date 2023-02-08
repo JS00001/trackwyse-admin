@@ -5,7 +5,7 @@
  * Copyright (c) 2023 Trackwyse
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import cn from "classnames";
 import { motion } from "framer-motion";
 import * as RadixIcons from "react-icons/rx";
@@ -23,45 +23,30 @@ interface MenuComponents {
   Item: React.FC<ItemProps>;
 }
 
-const menuVariants = {
-  open: {
-    opacity: 1,
-    height: "auto",
-    transition: {
-      duration: 0.25,
-      staggerChildren: 0.025,
-      staggerDirection: -1,
-      when: "beforeChildren",
-    },
-  },
-  closed: {
-    opacity: 0,
-    height: 0,
-    transition: {
-      duration: 0.25,
-      when: "afterChildren",
-    },
-  },
-};
-
-const menuItem = {
-  open: {
-    opacity: 1,
-    transition: {
-      duration: 0.25,
-      ease: "easeOut",
-    },
-  },
-  closed: {
-    opacity: 0,
-    transition: {
-      duration: 0.1,
-      ease: "easeOut",
-    },
-  },
-};
-
 const Menu: React.FC<MenuProps> & MenuComponents = ({ open, position = "top", children }) => {
+  const menuVariants = useMemo(() => {
+    return {
+      open: {
+        opacity: 1,
+        height: "auto",
+        transition: {
+          duration: 0.0625,
+          staggerChildren: 0.025,
+          staggerDirection: position === "top" ? -1 : 1,
+          when: "beforeChildren",
+        },
+      },
+      closed: {
+        opacity: 0,
+        height: 0,
+        transition: {
+          duration: 0.25,
+          when: "afterChildren",
+        },
+      },
+    };
+  }, [position]);
+
   const buttonRef = React.useRef<HTMLDivElement>(null);
   const [buttonHeight, setButtonHeight] = React.useState(0);
 
@@ -141,6 +126,25 @@ interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = ({ title, icon, onClick }) => {
+  const menuItem = useMemo(() => {
+    return {
+      open: {
+        opacity: 1,
+        transition: {
+          duration: 0.25,
+          ease: "easeOut",
+        },
+      },
+      closed: {
+        opacity: 0,
+        transition: {
+          duration: 0.1,
+          ease: "easeOut",
+        },
+      },
+    };
+  }, []);
+
   const Icon = icon ? RadixIcons[icon] : null;
 
   const classNames = cn(

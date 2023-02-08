@@ -4,6 +4,8 @@
  *
  * Copyright (c) 2023 Trackwyse
  */
+
+import jsPDF from "jspdf";
 import lodash from "lodash";
 import QRCode from "react-qr-code";
 import classNames from "classnames";
@@ -26,6 +28,7 @@ const DashboardGenerateLabelsPage: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
 
   const [labels, setLabels] = useState<string[]>([]);
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const [selectedColor, setSelectedColor] = useState<"Blue" | "Pink" | "Yellow" | "Orange" | null>(
     null
   );
@@ -46,9 +49,14 @@ const DashboardGenerateLabelsPage: React.FC = () => {
   };
 
   const onDownloadLabelSheet = () => {
+    setDownloadLoading(true);
+
     const element = divRef.current;
 
-    if (!element) return;
+    if (!element) {
+      setDownloadLoading(false);
+      return;
+    }
 
     html2canvas(element, {
       onclone: (document) => {
@@ -62,10 +70,13 @@ const DashboardGenerateLabelsPage: React.FC = () => {
       },
       backgroundColor: null,
     }).then((canvas) => {
-      let a = document.createElement("a");
-      a.href = canvas.toDataURL("image/png");
-      a.download = "label-sheet.png";
-      a.click();
+      let imageData = canvas.toDataURL("image/png");
+      let document = new jsPDF("p", "mm");
+      // add the image to pdf to fit the page without scaling
+      document.addImage(imageData, "PNG", -10, -10, 230, 297);
+
+      document.save("labels.pdf");
+      setDownloadLoading(false);
     });
   };
 
@@ -91,6 +102,7 @@ const DashboardGenerateLabelsPage: React.FC = () => {
           <Button
             iconRight="IoCodeDownloadOutline"
             onClick={onDownloadLabelSheet}
+            loading={downloadLoading}
             disabled={
               lodash.isEmpty(labels) || createLabelSheetMutation.isLoading || selectedColor === null
             }
