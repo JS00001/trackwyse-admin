@@ -4,6 +4,8 @@
  *
  * Copyright (c) 2023 Trackwyse
  */
+
+import jsPDF from "jspdf";
 import lodash from "lodash";
 import QRCode from "react-qr-code";
 import classNames from "classnames";
@@ -21,12 +23,12 @@ import LabelsPink from "@/assets/LabelsPink";
 import Dropdown from "@/components/Dropdown";
 import LabelsYellow from "@/assets/LabelsYellow";
 import LabelsOrange from "@/assets/LabelsOrange";
-import jsPDF from "jspdf";
 
 const DashboardGenerateLabelsPage: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
 
   const [labels, setLabels] = useState<string[]>([]);
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const [selectedColor, setSelectedColor] = useState<"Blue" | "Pink" | "Yellow" | "Orange" | null>(
     null
   );
@@ -47,9 +49,14 @@ const DashboardGenerateLabelsPage: React.FC = () => {
   };
 
   const onDownloadLabelSheet = () => {
+    setDownloadLoading(true);
+
     const element = divRef.current;
 
-    if (!element) return;
+    if (!element) {
+      setDownloadLoading(false);
+      return;
+    }
 
     html2canvas(element, {
       onclone: (document) => {
@@ -69,6 +76,7 @@ const DashboardGenerateLabelsPage: React.FC = () => {
       document.addImage(imageData, "PNG", -10, -10, 230, 297);
 
       document.save("labels.pdf");
+      setDownloadLoading(false);
     });
   };
 
@@ -94,6 +102,7 @@ const DashboardGenerateLabelsPage: React.FC = () => {
           <Button
             iconRight="IoCodeDownloadOutline"
             onClick={onDownloadLabelSheet}
+            loading={downloadLoading}
             disabled={
               lodash.isEmpty(labels) || createLabelSheetMutation.isLoading || selectedColor === null
             }
