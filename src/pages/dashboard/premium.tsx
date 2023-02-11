@@ -16,6 +16,7 @@ import withAuth from "@/hoc/withAuth";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Layout from "@/components/Layout";
+import errorHandler from "@/lib/errorHandler";
 
 const DashboardPremiumPage: React.FC = () => {
   const [expiresIn, setExpiresIn] = useState<number | null>(null);
@@ -41,10 +42,8 @@ const DashboardPremiumPage: React.FC = () => {
           Toast.success("Premium request successful.");
           setPremiumForm.resetForm();
         },
-        onError: () => {
-          setPremiumForm.setErrors({
-            id: "Something went wrong",
-          });
+        onError: (err) => {
+          errorHandler.handle(err, setPremiumForm);
         },
       });
     },

@@ -5,6 +5,7 @@
  * Copyright (c) 2023 Trackwyse
  */
 
+import Head from "next/head";
 import "@/styles/globals.css";
 import "@/styles/calendar.css";
 import type { AppProps } from "next/app";
@@ -16,7 +17,6 @@ import AuthProvider from "@/contexts/Auth";
 import queryClient from "@/lib/queryClient";
 import FontProvider from "@/contexts/Font";
 import { AxiosInterceptor } from "@/contexts/Axios";
-import Head from "next/head";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (

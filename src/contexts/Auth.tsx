@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createContext, useEffect, useState, useContext } from "react";
 
 import api from "@/api";
+import errorHandler from "@/lib/errorHandler";
 
 interface AuthContextData {
   user: User;
@@ -153,6 +154,10 @@ const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) =>
           setUser({} as User);
           updateAccessToken("");
           updateRefreshToken("");
+          setLoading(false);
+        },
+        onError: (err) => {
+          errorHandler.handle(err);
           setLoading(false);
         },
       });
