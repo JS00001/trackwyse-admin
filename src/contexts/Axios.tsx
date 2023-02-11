@@ -68,7 +68,7 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
 
       const responseData: any = error.response?.data;
 
-      if (responseData?.message == "EXPIRED_TOKEN") {
+      if (responseData?.error?.message == "EXPIRED_TOKEN") {
         if (!error.config) {
           return Promise.reject(error);
         }
@@ -87,7 +87,7 @@ const AxiosInterceptor: React.FC<{ children?: React.ReactNode }> = ({ children }
         return await axiosClient.request(config);
       }
 
-      if (responseData?.message == "UNAUTHORIZED_REQUEST") {
+      if (responseData?.error?.message == "UNAUTHORIZED_REQUEST") {
         return router.push("/auth/login");
       }
 

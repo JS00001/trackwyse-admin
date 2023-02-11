@@ -17,6 +17,7 @@ import api from "@/api";
 import withAuth from "@/hoc/withAuth";
 import Layout from "@/components/Layout";
 import Button from "@/components/Button";
+import errorHandler from "@/lib/errorHandler";
 
 import LabelsBlue from "@/assets/LabelsBlue";
 import LabelsPink from "@/assets/LabelsPink";
@@ -44,6 +45,9 @@ const DashboardGenerateLabelsPage: React.FC = () => {
       onSuccess: ({ data }) => {
         const labelData = data.labels.map((label) => `trw://${label.uniqueID}`);
         setLabels(labelData);
+      },
+      onError: (err) => {
+        errorHandler.handle(err);
       },
     });
   };

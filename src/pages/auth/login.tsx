@@ -7,7 +7,6 @@
 
 import Image from "next/image";
 import { useFormik } from "formik";
-import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 
@@ -17,6 +16,7 @@ import Text from "@/components/Text";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { useAuth } from "@/contexts/Auth";
+import errorHandler from "@/lib/errorHandler";
 import { validateLoginInput } from "@/lib/validators";
 
 const LoginPage: React.FC = () => {
@@ -43,13 +43,8 @@ const LoginPage: React.FC = () => {
           updateRefreshToken(data.refreshToken);
           router.push("/dashboard");
         },
-        onError: (error) => {
-          if (error instanceof AxiosError) {
-            loginForm.setErrors({
-              email: error.response?.data?.message || "Something went wrong",
-              password: error.response?.data?.message || "Something went wrong",
-            });
-          }
+        onError: (err) => {
+          errorHandler.handle(err, loginForm);
         },
       });
     },
