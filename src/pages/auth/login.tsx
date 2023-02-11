@@ -15,6 +15,7 @@ import Config from "@/config";
 import Text from "@/components/Text";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import withNoAuth from "@/hoc/withNoAuth";
 import { useAuth } from "@/contexts/Auth";
 import errorHandler from "@/lib/errorHandler";
 import { validateLoginInput } from "@/lib/validators";
@@ -102,4 +103,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default withNoAuth(LoginPage);
