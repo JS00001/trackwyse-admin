@@ -18,7 +18,7 @@ interface Config {
 }
 
 const Config: Config = {
-  BUILD_ENV: process.env.BUILD_ENV || "development",
+  BUILD_ENV: process.env.BUILD_ENV || "production",
   TERMS_URL: process.env.TERMS_URL || "https://trackwyse.com/terms",
   PRIVACY_URL: process.env.PRIVACY_URL || "https://trackwyse.com/privacy",
 
