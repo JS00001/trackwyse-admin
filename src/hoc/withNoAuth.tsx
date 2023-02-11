@@ -6,8 +6,8 @@
  */
 
 import lodash from "lodash";
-import router, { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 import { useAuth } from "@/contexts/Auth";
 import DefaultLoader from "@/components/Loaders/Default";
